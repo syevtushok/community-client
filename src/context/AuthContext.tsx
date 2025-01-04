@@ -19,7 +19,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({children}) => {
     const fetchUserInfo = async (authToken: string) => {
         console.log('Fetching user info with token');
         try {
-            const response = await fetch('http://3.74.157.233:8080/user/me', {
+            const response = await fetch('http://api.algorithm-challenge.com:8080/user/me', {
                 headers: {
                     'Authorization': `Bearer ${authToken}`
                 }
@@ -58,7 +58,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({children}) => {
 
     const login = (): void => {
         console.log('Initiating login redirect');
-        window.location.href = 'http://3.74.157.233:8080/oauth2/authorization/google';
+        window.location.href = 'http://api.algorithm-challenge.com:8080/oauth2/authorization/google';
     };
 
     const logout = (): void => {

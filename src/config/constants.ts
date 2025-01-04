@@ -1,4 +1,4 @@
-export const API_BASE_URL = 'http://3.74.157.233:8080';
+export const API_BASE_URL = 'http://api.algorithm-challenge.com:8080';
 export const TOKEN_KEY = 'token';
 export const AUTH_ROUTES = {
     LOGIN: '/login'
