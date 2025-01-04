@@ -4,6 +4,7 @@ import {Card, CardContent} from "../ui/card.tsx";
 import {CheckCircleIcon, ExternalLinkIcon} from "lucide-react";
 import {DIFFICULTY_COLORS} from "../../config/constants.ts";
 import {detectLanguage} from "../../services/languageDetector.service.ts";
+import {api} from "../../services/api.service.ts";
 
 export const TaskCard = (props: { task: Task }) => {
     const {task} = props;
@@ -85,31 +86,22 @@ export const TaskCard = (props: { task: Task }) => {
         setError('');
         setIsSubmitting(true);
         try {
-            const response = await fetch(`https://api.algorithm-challenge.com/dashboard/tasks/${task.id}/solution`, {
-                method: 'POST',
-                headers: {
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`,
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
+            await api.post('/dashboard/tasks/${task.id}/solution',
+                {
                     timeSpent: solutionData.timeSpent,
                     userDifficulty: solutionData.userDifficulty,
                     solution: solutionData.solution || '',
                     language: language
-                })
-            });
 
-            if (!response.ok) {
-                const errorData = await response.json();
-                console.log('Error submitting solution:', errorData);
-            }
-
+                });
             setShowSolutionForm(false);
             window.location.reload();
         } catch (error) {
-            setError((error as Error).message || 'Failed to submit solution');
+            console.log('Error submitting solution:', error);
         } finally {
+            setShowSolutionForm(false);
             setIsSubmitting(false);
+            window.location.reload();
         }
     };
 

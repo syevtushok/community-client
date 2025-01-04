@@ -1,5 +1,6 @@
 import React, {createContext, ReactNode, useContext, useEffect, useState} from 'react';
 import {AuthContextType, User} from '../types/auth';
+import {api} from '../services/api.service';
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
@@ -16,23 +17,11 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({children}) => {
     const [user, setUser] = useState<User | null>(null);
     const [loading, setLoading] = useState(true);
 
-    const fetchUserInfo = async (authToken: string) => {
+    const fetchUserInfo = async () => {
         console.log('Fetching user info with token');
         try {
-            const response = await fetch('https://api.algorithm-challenge.com/user/me', {
-                headers: {
-                    'Authorization': `Bearer ${authToken}`
-                }
-            });
-
-            if (response.ok) {
-                const userData = await response.json();
-                console.log('User data received:', userData);
-                setUser(userData);
-            } else {
-                console.error('Failed to fetch user info:', response.status);
-                logout();
-            }
+            const userData = await api.get<User>('/user/me');
+            setUser(userData);
         } catch (error) {
             console.error('Error fetching user:', error);
             logout();
@@ -44,7 +33,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({children}) => {
     useEffect(() => {
         console.log('Token changed:', token ? 'Present' : 'Not present');
         if (token) {
-            void fetchUserInfo(token);
+            void fetchUserInfo();
         } else {
             setLoading(false);
         }
