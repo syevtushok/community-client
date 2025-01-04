@@ -85,7 +85,7 @@ export const TaskCard = (props: { task: Task }) => {
         setError('');
         setIsSubmitting(true);
         try {
-            const response = await fetch(`http://localhost:8080/dashboard/tasks/${task.id}/solution`, {
+            const response = await fetch(`http://3.74.157.233:8080/dashboard/tasks/${task.id}/solution`, {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`,
