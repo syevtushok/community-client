@@ -85,7 +85,7 @@ export const TaskCard = (props: { task: Task }) => {
         setError('');
         setIsSubmitting(true);
         try {
-            const response = await fetch(`http://api.algorithm-challenge.com:8080/dashboard/tasks/${task.id}/solution`, {
+            const response = await fetch(`https://api.algorithm-challenge.com/dashboard/tasks/${task.id}/solution`, {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`,
