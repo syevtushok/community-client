@@ -53,7 +53,7 @@ export const JoinChallenge: React.FC = () => {
 
         try {
             await api.post('/participants/join', { preferredName });
-            navigate('/dashboard');
+            navigate('/');
         } catch (err: any) {
             if (err.response?.status === 409) {
                 setError('This name is already taken. Please choose another one.');

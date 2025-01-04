@@ -86,7 +86,7 @@ export const TaskCard = (props: { task: Task }) => {
         setError('');
         setIsSubmitting(true);
         try {
-            await api.post('/dashboard/tasks/${task.id}/solution',
+            await api.post(`/dashboard/tasks/${task.id}/solution`,
                 {
                     timeSpent: solutionData.timeSpent,
                     userDifficulty: solutionData.userDifficulty,

@@ -1,11 +1,11 @@
-import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
-import { LoginButton } from "../components/login/LoginButton";
-import { APP_NAME, AUTH_REDIRECT_PATH, CHALLENGE_TEXT } from "../config/constants";
+import {useEffect, useState} from 'react';
+import {useNavigate} from 'react-router-dom';
+import {useAuth} from '../context/AuthContext';
+import {LoginButton} from "../components/login/LoginButton";
+import {APP_NAME, AUTH_REDIRECT_PATH, CHALLENGE_TEXT} from "../config/constants";
 
 export const Login = () => {
-    const { login, user, loading } = useAuth();
+    const {login, user, loading} = useAuth();
     const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState("");
@@ -55,9 +55,6 @@ export const Login = () => {
                     </div>
                 </div>
 
-                <div className="mt-8 text-center text-sm text-gray-500">
-                    By signing in, you agree to our Terms of Service and Privacy Policy
-                </div>
             </div>
         </div>
     );

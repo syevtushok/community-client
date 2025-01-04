@@ -22,7 +22,7 @@ class ApiService {
         }
 
         if (!response.ok) {
-            const errorData = await response.json().catch(() => null);
+            const errorData = await response.json().catch((error) => console.error('Error parsing error response:', error));
             throw new HttpError(response.status, undefined, errorData);
         }
 
