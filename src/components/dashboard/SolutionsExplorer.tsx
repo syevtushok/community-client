@@ -3,6 +3,7 @@ import {ParticipantSolutions} from "../../types/dashboard";
 import {api} from "../../services/api.service";
 import {Card, CardContent, CardHeader, CardTitle} from "../ui/card";
 import {detectLanguage} from "../../services/languageDetector.service.ts";
+import { ChevronDown, ChevronUp, Calendar } from "lucide-react";
 
 declare global {
     interface Window {
@@ -21,6 +22,7 @@ export const SolutionsExplorer = () => {
     const [solutions, setSolutions] = useState<ParticipantSolutions[]>([]);
     const [selectedParticipant, setSelectedParticipant] = useState<number | null>(null);
     const [prismLoaded, setPrismLoaded] = useState(false);
+    const [expandedSolutions, setExpandedSolutions] = useState<number[]>([]);
 
     // Single Prism loading effect
     useEffect(() => {
@@ -99,10 +101,18 @@ export const SolutionsExplorer = () => {
                 window.Prism.highlightAll();
             }, 0);
         }
-    }, [selectedParticipant, prismLoaded]);
+    }, [selectedParticipant, prismLoaded, expandedSolutions]);
+
+    const isToday = (date: string) => {
+        const today = new Date();
+        const solutionDate = new Date(date);
+        return today.toDateString() === solutionDate.toDateString();
+    };
 
     const getParticipantSolutions = () => {
-        return solutions.find(p => p.participantId === selectedParticipant)?.solutions || [];
+        const participantSolutions = solutions.find(p => p.participantId === selectedParticipant)?.solutions || [];
+        // Filter solutions to only show today's solutions
+        return participantSolutions.filter(solution => isToday(solution.completedAt));
     };
 
     const getDifficultyClass = (difficulty: string) => {
@@ -118,11 +128,27 @@ export const SolutionsExplorer = () => {
         }
     };
 
+    const toggleSolution = (solutionId: number) => {
+        setExpandedSolutions(prev =>
+            prev.includes(solutionId)
+                ? prev.filter(id => id !== solutionId)
+                : [...prev, solutionId]
+        );
+    };
+
+    const todaySolutions = getParticipantSolutions();
+
     return (
         <Card className="bg-gray-800 border-gray-700">
             <CardHeader>
                 <div className="flex items-center justify-between">
-                    <CardTitle className="text-white">Solutions Explorer</CardTitle>
+                    <div className="flex items-center gap-2">
+                        <CardTitle className="text-white">Solutions Explorer</CardTitle>
+                        <span className="text-sm text-gray-400 flex items-center gap-1">
+                            <Calendar className="w-4 h-4" />
+                            {new Date().toLocaleDateString()}
+                        </span>
+                    </div>
                     <select
                         value={selectedParticipant || ''}
                         onChange={(e) => setSelectedParticipant(Number(e.target.value))}
@@ -137,45 +163,60 @@ export const SolutionsExplorer = () => {
                 </div>
             </CardHeader>
             <CardContent>
-                <div className="space-y-4">
-                    {getParticipantSolutions().map(solution => (
-                        <div
-                            key={solution.id}
-                            className="p-4 bg-gray-700/50 rounded-lg border border-gray-600"
-                        >
-                            <div className="flex justify-between items-start mb-2">
-                                <div>
-                                    <h3 className="text-white font-medium">{solution.taskName}</h3>
-                                    <span className={`px-2 py-0.5 rounded text-xs font-medium mt-1 inline-block ${
-                                        getDifficultyClass(solution.difficulty)
-                                    }`}>
-                                        {solution.difficulty}
-                                    </span>
-                                </div>
-                                <div className="text-right">
-                                    <p className="text-gray-400 text-sm">
-                                        {new Date(solution.completedAt).toLocaleDateString()}
-                                    </p>
-                                    <p className="text-gray-400 text-sm">
-                                        {solution.timeSpent} minutes
-                                    </p>
-                                </div>
-                            </div>
-                            {solution.solution && (
-                                <div className="mt-2">
-                                    <div className="text-sm text-gray-400 mb-2">
-                                        Language: {detectLanguage(solution.solution)}
+                {todaySolutions.length === 0 ? (
+                    <div className="text-center py-8 text-gray-400">
+                        No solutions submitted today
+                    </div>
+                ) : (
+                    <div className="space-y-4">
+                        {todaySolutions.map(solution => (
+                            <div
+                                key={solution.id}
+                                className="p-4 bg-gray-700/50 rounded-lg border border-gray-600"
+                            >
+                                <div
+                                    className="flex justify-between items-start mb-2 cursor-pointer"
+                                    onClick={() => toggleSolution(solution.id)}
+                                >
+                                    <div>
+                                        <div className="flex items-center gap-2">
+                                            <h3 className="text-white font-medium">{solution.taskName}</h3>
+                                            {expandedSolutions.includes(solution.id)
+                                                ? <ChevronUp className="w-4 h-4 text-gray-400" />
+                                                : <ChevronDown className="w-4 h-4 text-gray-400" />
+                                            }
+                                        </div>
+                                        <span className={`px-2 py-0.5 rounded text-xs font-medium mt-1 inline-block ${
+                                            getDifficultyClass(solution.difficulty)
+                                        }`}>
+                                            {solution.difficulty}
+                                        </span>
                                     </div>
-                                    <pre className="bg-gray-900 p-4 rounded-md overflow-x-auto">
-                                        <code className={`language-${detectLanguage(solution.solution)}`}>
-                                            {solution.solution}
-                                        </code>
-                                    </pre>
+                                    <div className="text-right">
+                                        <p className="text-gray-400 text-sm">
+                                            {new Date(solution.completedAt).toLocaleTimeString()}
+                                        </p>
+                                        <p className="text-gray-400 text-sm">
+                                            {solution.timeSpent} minutes
+                                        </p>
+                                    </div>
                                 </div>
-                            )}
-                        </div>
-                    ))}
-                </div>
+                                {expandedSolutions.includes(solution.id) && solution.solution && (
+                                    <div className="mt-2">
+                                        <div className="text-sm text-gray-400 mb-2">
+                                            Language: {detectLanguage(solution.solution)}
+                                        </div>
+                                        <pre className="bg-gray-900 p-4 rounded-md overflow-x-auto">
+                                            <code className={`language-${detectLanguage(solution.solution)}`}>
+                                                {solution.solution}
+                                            </code>
+                                        </pre>
+                                    </div>
+                                )}
+                            </div>
+                        ))}
+                    </div>
+                )}
             </CardContent>
         </Card>
     );

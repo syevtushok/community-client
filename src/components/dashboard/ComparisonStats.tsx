@@ -23,10 +23,10 @@ export class ComparisonStats extends Component<{ userStats: UserStats, globalSta
                                     <p className="text-gray-400 text-sm">Avg. Solution Time</p>
                                 </CustomTooltip>
                                 <p className="text-2xl font-bold text-white mt-1">
-                                    {(userStats?.avgTimeSpent || 0).toFixed(2)}m
+                                    {(userStats?.avgTimeSpent || 0).toFixed(1)}m
                                 </p>
                                 <p className="text-xs text-gray-400 mt-1">vs
-                                    global {(globalStats?.avgTimeSpent || 0).toFixed(2)}m
+                                    global {(globalStats?.avgTimeSpent || 0).toFixed(1)}m
                                 </p>
                             </div>
                             <div className="p-4 rounded-lg bg-gray-800/50 border border-gray-700">
@@ -34,10 +34,10 @@ export class ComparisonStats extends Component<{ userStats: UserStats, globalSta
                                     <p className="text-gray-400 text-sm">Perceived Difficulty</p>
                                 </CustomTooltip>
                                 <p className="text-2xl font-bold text-white mt-1">
-                                    {(userStats?.avgDifficulty || 0).toFixed(2)}/5
+                                    {(userStats?.avgDifficulty || 0).toFixed(1)}/5
                                 </p>
                                 <p className="text-xs text-gray-400 mt-1">vs
-                                    global {(globalStats?.avgDifficulty || 0).toFixed(2)}/5
+                                    global {(globalStats?.avgDifficulty || 0).toFixed(1)}/5
                                 </p>
                             </div>
                         </div>

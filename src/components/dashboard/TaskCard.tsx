@@ -199,7 +199,6 @@ export const TaskCard = (props: { task: Task }) => {
                                         Solution
                                     </label>
                                     <div className="relative">
-                                        {/* Hidden textarea for input */}
                                         <textarea
                                             value={solution}
                                             onChange={handleSolutionChange}
@@ -207,7 +206,6 @@ export const TaskCard = (props: { task: Task }) => {
                                             className="absolute inset-0 opacity-0 w-full h-full"
                                             placeholder="Paste your solution here"
                                         />
-                                        {/* Visible pre/code block for highlighting */}
                                         <pre
                                             className="w-full bg-gray-700 border border-gray-600 rounded-md px-3 py-2 text-white font-mono text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 min-h-[12rem] whitespace-pre-wrap">
             <code className={`language-${language}`}>

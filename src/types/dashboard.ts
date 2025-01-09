@@ -18,6 +18,7 @@ export interface Stats {
     currentStreak: number;
     averageTime: number;
     topicsProgress: Record<string, TopicProgress>;
+    challengeStartDate?: string;
 }
 
 export interface ComparisonStatsType {

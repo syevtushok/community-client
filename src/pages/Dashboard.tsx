@@ -1,6 +1,7 @@
 import {useEffect, useState} from 'react';
 import {Card, CardContent, CardHeader, CardTitle} from "../components/ui/card.tsx";
 import {LeaderboardCard} from "../components/dashboard/Leaderboard.tsx";
+import {DashboardHeader} from "../components/dashboard/DashboardHeader.tsx";
 import {ParticipantComparison} from "../components/dashboard/ParticipantComparison.tsx";
 import {ComparisonEntry, LeaderboardEntry, Stats, Task} from "../types/dashboard.ts";
 import {BrainIcon, CalendarIcon, ClockIcon, LogOutIcon, TrophyIcon} from "lucide-react";
@@ -11,8 +12,8 @@ import {ComparisonStats} from "../components/dashboard/ComparisonStats.tsx";
 import {SolutionsExplorer} from "../components/dashboard/SolutionsExplorer.tsx";
 import {useAuth} from "../context/AuthContext.tsx";
 
-
 const Dashboard = () => {
+        const startDate = new Date('January 15, 2025');
         const {logout, user} = useAuth();
         const [loading, setLoading] = useState(true);
         const [tasks, setTasks] = useState<Task[]>([]);
@@ -129,13 +130,7 @@ console.log("1993",user)
 
                 <main className="max-w-7xl mx-auto px-4 py-8">
                     {/* Header section */}
-                    <div className="mb-8">
-                        <h1 className="text-3xl font-bold text-white">
-                            Day {stats.totalSolved} of 100
-                        </h1>
-                        <p className="text-gray-400 mt-2">Track your daily algorithm practice</p>
-                    </div>
-
+                    <DashboardHeader startDate={startDate}/>
                     {/* Stats Cards */}
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
                         <StatsCard

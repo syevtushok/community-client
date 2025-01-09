@@ -1,6 +1,7 @@
 import React, {createContext, ReactNode, useContext, useEffect, useState} from 'react';
 import {AuthContextType, User} from '../types/auth';
 import {api} from '../services/api.service';
+import {API_BASE_URL} from "../config/constants.ts";
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
@@ -47,7 +48,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({children}) => {
 
     const login = (): void => {
         console.log('Initiating login redirect');
-        window.location.href = 'https://api.algorithm-challenge.com/oauth2/authorization/google';
+        window.location.href = `${API_BASE_URL}/oauth2/authorization/google`;
     };
 
     const logout = (): void => {
