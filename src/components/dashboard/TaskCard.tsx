@@ -1,7 +1,7 @@
 import {SolutionData, Task} from "../../types/dashboard.ts";
 import React, {useEffect, useState} from "react";
 import {Card, CardContent} from "../ui/card.tsx";
-import {CheckCircleIcon, ExternalLinkIcon} from "lucide-react";
+import {CheckCircleIcon, ExternalLinkIcon, MessagesSquare} from "lucide-react";
 import {DIFFICULTY_COLORS} from "../../config/constants.ts";
 import {detectLanguage} from "../../services/languageDetector.service.ts";
 import {api} from "../../services/api.service.ts";
@@ -92,7 +92,6 @@ export const TaskCard = (props: { task: Task }) => {
                     userDifficulty: solutionData.userDifficulty,
                     solution: solutionData.solution || '',
                     language: language
-
                 });
             setShowSolutionForm(false);
             window.location.reload();
@@ -142,6 +141,17 @@ export const TaskCard = (props: { task: Task }) => {
                         >
                             <ExternalLinkIcon/>
                         </a>
+                        {task.discussionLink && (
+                            <a
+                                href={task.discussionLink}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-indigo-400 hover:text-indigo-300 transition-colors"
+                                title="Join Discord discussion"
+                            >
+                                <MessagesSquare size={20} />
+                            </a>
+                        )}
                     </div>
                 </div>
             </CardContent>

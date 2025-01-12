@@ -5,6 +5,7 @@ export interface Task {
     topic: string;
     completed: boolean;
     link: string;
+    discussionLink: string;
 }
 
 interface TopicProgress {

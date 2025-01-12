@@ -166,8 +166,8 @@ console.log("1993",user)
                             <Card className="bg-gray-800 border-gray-700">
                                 <CardHeader>
                                     <CardTitle className="text-white">Today's Problems</CardTitle>
-                                    <p className="text-gray-400 text-sm">Complete these problems to maintain your
-                                        streak</p>
+                                    {tasks.length != 0 ? <p className="text-gray-400 text-sm">Your tasks for today</p>
+                                        : <p className="text-gray-400 text-sm">No tasks for today! Time to rest</p>}
                                 </CardHeader>
                                 <CardContent>
                                     <div className="space-y-4">
